@@ -1,81 +1,63 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
 import random
+import time
 
-browser = webdriver.Firefox()
-browser.get("https://forms.gle/ryEjPAFP16XK9uPc7")
-times = 50
+firefox_options = Options()
+firefox_options.add_argument('-headless')
+firefox_options.add_argument('--disable-extensions')
+firefox_options.add_argument('--disable-popup-blocking')
+firefox_options.add_argument('--profile-directory=Default')
+firefox_options.add_argument('--disable-plugins-discovery')
+firefox_options.add_argument('--disable-save-password-bubble')
+firefox_options.add_argument('--disable-blink-features=AutomationControlled')
+
+firefox_driver_path = '/geckodriver' 
+firefox_service = Service(executable_path=firefox_driver_path)
+driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
+
+driver.get("https://forms.gle/P2URQH7hBU9wMRsUA")
+times = 1
+
+driver.implicitly_wait(10)
+time.sleep(5)
+
 try:
     while times:
         #Hardcoded logic
         test = 0
 
-        radiobuttons = browser.find_elements_by_class_name("docssharedWizToggleLabeledLabelWrapper")
+        radiobuttons = driver.find_elements("css selector", "docssharedWizToggleLabeledContainer")
+        # textboxes = driver.find_elements_by_class_name("quantumWizTextinputPaperinputInput")
+        # testcheck = driver.find_elements_by_class_name("freebirdMaterialScalecontentColumn")
+        checkboxes = driver.find_elements("css selector", "docssharedWizToggleLabeledContainer")
 
-        check1 = random.choice([0,1,2])
+        if len(radiobuttons) < 5:
+            print("Error: Not enough radio buttons on the page")
+            print(len(radiobuttons))
+            break
 
+        check1 = random.choice([0,1,2,3,4])
         radiobuttons[check1].click()
 
-        if check1 == 2 or check1 == 1:
-            test = 4
-            radiobuttons[test].click()
+        check2 = random.choice([5,6,7,8,9])
+        radiobuttons[check2].click()
 
-        else:
-            test = 3
-            radiobuttons[test].click()
-
-        textboxes = browser.find_elements_by_class_name("quantumWizTextinputPaperinputInput")
-        if test == 3:
-            crypto = ["BTC", "ETH", "XRP", "LTC", "USDT", "BCH", "LIBRA", "XMR", "EOS", "BSV", "BNB"]
-            textboxes[0].send_keys(random.choice(crypto))
-
-
-        if check1 == 2:
-            radiobuttons[7].click()
-        else:
-            check2 = random.choice([5,6])
-            radiobuttons[check2].click()
-
-        testcheck = browser.find_elements_by_class_name("freebirdMaterialScalecontentColumn")
-        testvar = random.choice([0,1,2,3,4])
-        testcheck[testvar].click()
-
-        check3 = random.choice([8,9,10])
-        radiobuttons[check3].click()
-        check4 = random.choice([11,12,13])
-        radiobuttons[check4].click()
-
-
-        check5 = random.choice([14,15,16])
-        radiobuttons[check5].click()
-
-        checkboxes = browser.find_elements_by_class_name("quantumWizTogglePapercheckboxInnerBox")
-
-        if check1 == 0:
-            c1 = random.choice([0,1])
-            checkboxes[c1].click()
-            c2 = random.choice([2,3])
-            checkboxes[c2].click()
-            c3 = random.choice([4,5])
-            checkboxes[c3].click()
-            browser.implicitly_wait(4)
-        else:
-            checkboxes[6].click()
-
-        browser.implicitly_wait(7)
-
-        c4 = random.choice([8,9])
-        checkboxes[c4].click()
-
-        c5 = random.choice([10,11, 12, 13])
-        checkboxes[c5].click()
-
-        browser.find_element_by_xpath("//*[contains(text(), 'Submit')]").click()
-        browser.implicitly_wait(4)
-        browser.get("https://forms.gle/ryEjPAFP16XK9uPc7")
+        c1 = random.choice([0,1])
+        checkboxes[c1].click()
+        c2 = random.choice([2,3])
+        checkboxes[c2].click()
+        driver.implicitly_wait(4)
+        checkboxes[4].click()
+        driver.implicitly_wait(7)
+        driver.find_element_by_xpath("//*[contains(text(), 'Kirim')]").click()
+        driver.implicitly_wait(4)
+        driver.get("https://forms.gle/P2URQH7hBU9wMRsUA")
         times-=1
         print(times)
 finally:
-	browser.quit()	
+	driver.quit()	
 
 
 

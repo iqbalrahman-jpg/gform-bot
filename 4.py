@@ -15,6 +15,7 @@ nama = [
     "Riskia Ayu Febrianti",
     "Budi Prasetyo Wibowo",
     "Aryo Nugraha",
+    
     "Nana Annisa",
     "Yahya Nugraha",
     "Putri Kirana Dewi",

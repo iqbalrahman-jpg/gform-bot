@@ -36,7 +36,8 @@ try:
         waktu = dat.waktu(pekerjaan)
 
         # time.sleep(dat.jeda[index])
-        time.sleep(random.randint(10,200))
+        if times != dat.times :
+            time.sleep(random.randint(10,200))
 
         data.pindahHalaman()
 
